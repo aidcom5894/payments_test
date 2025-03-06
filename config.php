@@ -1,9 +1,9 @@
 <?php 
 
 $hostname = 'localhost';
-$username = 'root';
-$password = 'Admin1234#@';
-$dbname = 'test_db';
+$username = 'u445536153_financialAdmin';
+$password = 'Ue*1S@i|V6279R8n^S2n4;P';
+$dbname = 'u445536153_payments_demo';
 
 
 
