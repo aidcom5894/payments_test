@@ -17,6 +17,8 @@ include('config.php');
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <title>Payment Functionality Test</title>
   </head>
   <body>
@@ -95,7 +97,7 @@ include('config.php');
 			  </div>
 
 			  <div class="mb-3">
-			    <button type="submit" name="checkout" class="btn btn-success">Checkout</button>
+			    <button type="submit" name="checkout" id="rzp-button1" class="btn btn-success">Checkout</button>
 			  </div>
 
 			  
@@ -184,4 +186,50 @@ setInterval(fetchData, 200);
 fetchData(); // Initial call
 
 
+</script>
+
+
+<script>
+    document.getElementById('rzp-button1').onclick = function (e) {
+        let amount = document.getElementById('totalCosting').value * 100; // Convert to paise
+
+        var options = {
+            "key": "rzp_live_pztf6D9htppjWM", // Replace with your Key ID
+            "amount": amount, 
+            "currency": "INR",
+            "name": "AIDCOM IT SERVICE & SOLUTIONS",
+            "description": "Order Payment",
+            "image": "https://yourwebsite.com/logo.png",
+            "handler": function (response) {
+                alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                // Send payment ID to backend for verification and order processing
+            },
+            "prefill": {
+                "name": "Customer Name",
+                "email": "customer@example.com",
+                "contact": "9876543210"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        e.preventDefault();
+    };
+</script>
+
+
+
+<script>
+    function verifyPayment(paymentId) {
+        fetch('verify.php', {
+            method: 'POST',
+            body: JSON.stringify({ razorpay_payment_id: paymentId }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.text())
+        .then(data => alert(data));
+    }
 </script>
